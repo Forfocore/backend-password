@@ -18,10 +18,15 @@ $router->get('/', function () use ($router) {
 });
 
 
-$router->get('generate', function () use ($router) {
-    return $router->app->version();
+$router->group(['prefix' => 'api'], function () use ($router) {
+    $router->get('passwords', 'PasswordController@showAll');
+
+    $router->group(['prefix' => 'password'], function () use ($router) {
+        $router->get('generate', 'PasswordController@generate');
+        $router->get('{id}', 'PasswordController@show');
+        $router->delete('{id}/delete', 'PasswordController@delete');
+    });
 });
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
+
+
